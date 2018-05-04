@@ -3,4 +3,6 @@ export class PaginatorOptions {
   desc?: boolean;
   resultsPerPage?: number;
   searchKeyWhitelist?: Array<string>;
+  objectSerializer?: any;
 }
+

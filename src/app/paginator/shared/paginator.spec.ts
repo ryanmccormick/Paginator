@@ -46,6 +46,12 @@ fdescribe('Paginator object', () => {
       expect(paginator.filteredResults[0].item).toEqual('Mike');
     });
 
+    it('should return a destructured object representation of an array item because no objectSerializer has been set', () => {
+      paginator.searchValue = '';
+      expect(paginator.filteredResults.length).toEqual(26);
+      expect(paginator.filteredResults[0] instanceof MockData).toEqual(false);
+    });
+
     it('should return a select group of items when searching by a couple of letters', () => {
       paginator.searchValue = 'an';
       expect(paginator.filteredResults.length).toEqual(2);
@@ -65,13 +71,47 @@ fdescribe('Paginator object', () => {
       expect(paginator.filteredResults.length).toEqual(2);
       expect(paginator.filteredResults[0].item).toEqual('Yankee');
     });
+  });
 
+  describe('Paginator#pagedResults', () => {
+    it('should be defined', () => {
+      expect(paginator.pagedResults).toBeDefined();
+    });
+
+    it('should return five results as the default settings are set to five results per page', () => {
+      expect(paginator.pagedResults.length).toEqual(5);
+      expect(paginator.currentPageNumber).toEqual(1);
+      expect(paginator.pageNumberCeiling).toEqual(6);
+    });
+
+    it('should return ten results per page', () => {
+      paginator.resultsPerPage = 10;
+      expect(paginator.pagedResults.length).toEqual(10);
+      expect(paginator.pageNumberCeiling).toEqual(3);
+    });
   });
 
 
+  describe('Paginator Object Serializer', () => {
+    let paginatorSerial: Paginator<MockData>;
 
+    beforeEach(() => {
+      const options = {
+        objectSerializer: (item: MockData) => MockData.getInstance(item)
+      };
 
+      paginatorSerial = new Paginator<MockData>(MOCK_DATA, options);
+    });
 
+    it ('should be defined', () => {
+      expect(paginatorSerial).toBeDefined();
+    });
+
+    it('should return a list of new instances of MockData from filteredResults', () => {
+      expect(paginatorSerial.filteredResults.length).toEqual(26);
+      expect(paginatorSerial.filteredResults[0] instanceof MockData).toEqual(true, 'object serializer not hooked up');
+    });
+  });
 
 });
 
@@ -108,4 +148,19 @@ export const MOCK_DATA = [
 export class MockData {
   id: string;
   item: string;
+
+  constructor(id?: string, item?: string) {
+    this.id = id;
+    this.item = item;
+  }
+
+  public static getInstance(obj: MockData): MockData {
+    try {
+      const {id, item} = obj;
+      return new MockData(id, item);
+    } catch (exception) {
+      console.error(exception);
+    }
+  }
+
 }
