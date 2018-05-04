@@ -1,4 +1,6 @@
 import { Paginator } from './paginator';
+import { MockData } from '../../data/mock-data.model';
+import { MOCK_DATA } from './mock-data.constants';
 
 
 fdescribe('Paginator object', () => {
@@ -91,6 +93,92 @@ fdescribe('Paginator object', () => {
     });
   });
 
+  describe('Paginator#getbasicPaginatorList', () => {
+    it('should be defined', () => {
+      expect(paginator.getBasicPaginatorList).toBeDefined();
+    });
+
+    it('should return a list of numbers', () => {
+      const paginatorList = paginator.getBasicPaginatorList();
+      console.log(paginatorList);
+      paginator.resultsPerPage = 5;
+      expect(paginator.pagedResults.length).toEqual(5);
+      expect(paginator.pageNumberCeiling).toEqual(6);
+      expect(paginatorList.length).toEqual(6);
+      expect(paginatorList[0]).toEqual(1);
+      expect(paginatorList[5]).toEqual(6);
+    });
+  });
+
+  describe('Paginator#moveNextPage', () => {
+    it('should be defined', () => {
+      expect(paginator.moveNextPage).toBeDefined();
+    });
+
+    it('should set the next page', () => {
+      paginator.currentPageNumber = 1;
+      paginator.moveNextPage();
+      expect(paginator.currentPageNumber).toEqual(2);
+    });
+
+    it('should not exceed the page number ceiling', () => {
+      paginator.setResultsPerPage(5);
+      paginator.currentPageNumber = 6;
+      paginator.moveNextPage();
+      expect(paginator.currentPageNumber).toEqual(6);
+    });
+  });
+
+  describe('Paginator#movePreviousPage', () => {
+    it('should be defined', () => {
+      expect(paginator.movePreviousPage).toBeDefined();
+    });
+
+    it('should set the previous page', () => {
+      paginator.currentPageNumber = 6;
+      paginator.movePreviousPage();
+      expect(paginator.currentPageNumber).toEqual(5);
+    });
+
+    it('should not exceed the page number ceiling', () => {
+      paginator.setResultsPerPage(5);
+      paginator.currentPageNumber = 1;
+      paginator.movePreviousPage();
+      expect(paginator.currentPageNumber).toEqual(1);
+    });
+  });
+
+  describe('Paginator#setCurrentPageNumber', () => {
+    it ('should be defined', () => {
+      expect(paginator.currentPageNumber).toBeDefined();
+    });
+
+    it ('should allow to set first page within page boundaries', () => {
+      paginator.resultsPerPage = 5;
+      paginator.currentPageNumber = 1;
+      expect(paginator.currentPageNumber).toEqual(1);
+    });
+
+    it ('should allow to set last page within boundaries', () => {
+      paginator.resultsPerPage = 5;
+      paginator.currentPageNumber = 6;
+      expect(paginator.currentPageNumber).toEqual(6);
+    });
+
+    it ('should not allow to set page to zero', () => {
+      paginator.resultsPerPage = 5;
+      paginator.currentPageNumber = 0;
+      expect(paginator.currentPageNumber).not.toEqual(0);
+      expect(paginator.currentPageNumber).toEqual(1);
+    });
+
+    it ('should not allow to set page past ceiling of six.', () => {
+      paginator.resultsPerPage = 5;
+      paginator.currentPageNumber = 11;
+      expect(paginator.currentPageNumber).not.toEqual(11);
+    });
+  });
+
 
   describe('Paginator Object Serializer', () => {
     let paginatorSerial: Paginator<MockData>;
@@ -115,52 +203,3 @@ fdescribe('Paginator object', () => {
 
 });
 
-
-export const MOCK_DATA = [
-  { id: 'aaaa1', item: 'Alpha' },
-  { id: 'bbbb1', item: 'Bravo' },
-  { id: 'cccc1', item: 'Charlie' },
-  { id: 'dddd1', item: 'Delta' },
-  { id: 'eeee1', item: 'Echo' },
-  { id: 'ffff1', item: 'Foxtrot' },
-  { id: 'gggg1', item: 'Gulf' },
-  { id: 'hhhh1', item: 'Hotel' },
-  { id: 'iiii1', item: 'India' },
-  { id: 'jjjj1', item: 'Juliet' },
-  { id: 'kkkk1', item: 'Kilo' },
-  { id: 'llll1', item: 'Lima' },
-  { id: 'mmmm1', item: 'Mike' },
-  { id: 'nnnn1', item: 'November' },
-  { id: 'oooo1', item: 'Oscar' },
-  { id: 'pppp1', item: 'Papa' },
-  { id: 'qqqq1', item: 'Quebec' },
-  { id: 'rrrr1', item: 'Romeo' },
-  { id: 'ssss1', item: 'Sierra' },
-  { id: '2tttt1', item: 'Tango' },
-  { id: 'uuuu1', item: 'Uniform' },
-  { id: 'vvvv1', item: 'Victor' },
-  { id: 'wwww1', item: 'Whiskey' },
-  { id: 'xxxx1', item: 'X-ray' },
-  { id: '1yyyy1', item: 'Yankee' },
-  { id: 'zzzz1', item: 'Zulu' }
-];
-
-export class MockData {
-  id: string;
-  item: string;
-
-  constructor(id?: string, item?: string) {
-    this.id = id;
-    this.item = item;
-  }
-
-  public static getInstance(obj: MockData): MockData {
-    try {
-      const {id, item} = obj;
-      return new MockData(id, item);
-    } catch (exception) {
-      console.error(exception);
-    }
-  }
-
-}

@@ -105,6 +105,22 @@ export class Paginator<T> {
     }
   }
 
+  // test
+  moveNextPage(): void {
+    const nextPage = this.currentPageNumber + 1;
+    if (nextPage <= this.pageNumberCeiling) {
+      this._currentPage = nextPage;
+    }
+  }
+
+  // test
+  movePreviousPage(): void {
+    const prevPage = this.currentPageNumber - 1;
+    if (prevPage > 0) {
+      this._currentPage = prevPage;
+    }
+  }
+
   getSortByKey(): string {
     return this._options.sortBy;
   }
@@ -138,6 +154,21 @@ export class Paginator<T> {
       this._options.resultsPerPage = value;
     } else {
       this._options.resultsPerPage = 1;
+    }
+  }
+
+  getBasicPaginatorList(): Array<number> {
+    if (this.pageNumberCeiling > 0) {
+      const pageNumberList = [];
+      const maxPages = this.pageNumberCeiling;
+
+      for (let i = 0; i < maxPages; i++) {
+        pageNumberList.push(i);
+      }
+
+      return pageNumberList.map(page => page + 1);
+    } else {
+      return [];
     }
   }
 
