@@ -3,7 +3,7 @@ import { MockData } from '../../data/mock-data.model';
 import { MOCK_DATA } from './mock-data.constants';
 
 
-fdescribe('Paginator object', () => {
+describe('Paginator object', () => {
   let paginator: Paginator<MockData>;
 
   beforeEach(() => {
