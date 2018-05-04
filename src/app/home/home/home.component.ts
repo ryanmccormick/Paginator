@@ -20,10 +20,20 @@ export class HomeComponent implements OnInit {
     this.mockDataService.getMockData().subscribe(data => this.setMockData(data));
   }
 
-  setMockData(value: Array<MockData>): void {
-    if (value) {
-      this.mockData = new Paginator<MockData>(value);
-    }
+  get searchValue() {
+    return this.mockData.searchValue;
+  }
+
+  set searchValue(value: string) {
+    this.mockData.searchValue = value;
+  }
+
+  get resultsPerPage(): number {
+    return this.mockData.resultsPerPage;
+  }
+
+  set resultsPerPage(value: number) {
+    this.mockData.resultsPerPage = value;
   }
 
   get mockDataList(): Array<MockData> {
@@ -32,6 +42,32 @@ export class HomeComponent implements OnInit {
     } else {
       return [];
     }
+  }
+
+  get paginationList(): Array<number> {
+    return this.mockData.getBasicPaginatorList();
+  }
+
+  setMockData(value: Array<MockData>): void {
+    if (value) {
+      this.mockData = new Paginator<MockData>(value, {sortBy: 'item'});
+    }
+  }
+
+  setPage(value: number) {
+    this.mockData.currentPageNumber = value;
+  }
+
+  isCurrentPage(value: number): boolean {
+    return this.mockData.currentPageNumber === value;
+  }
+
+  moveNextPage(): void {
+    this.mockData.moveNextPage();
+  }
+
+  movePreviousPage(): void {
+    this.mockData.movePreviousPage();
   }
 
 

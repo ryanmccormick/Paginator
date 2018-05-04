@@ -5,7 +5,7 @@ export const MOCK_DATA = [
   { id: 'dddd1', item: 'Delta' },
   { id: 'eeee1', item: 'Echo' },
   { id: 'ffff1', item: 'Foxtrot' },
-  { id: 'gggg1', item: 'Gulf' },
+  { id: 'gggg1', item: 'Golf' },
   { id: 'hhhh1', item: 'Hotel' },
   { id: 'iiii1', item: 'India' },
   { id: 'jjjj1', item: 'Juliet' },

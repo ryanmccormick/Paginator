@@ -1,6 +1,20 @@
 <div class="row">
-  <div class="col-12">
-    Search Form Here
+  <div class="col-6">
+    <div class="form-group form-inline">
+      <label for="searchText">Search</label>
+      <input type="text" class="form-control ml-3" id="searchText" [(ngModel)]="searchValue">
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="form-group form-inline float-right">
+      <label for="resultsPerPage">Results Per Page</label>
+      <select class="custom-select ml-3" id="resultsPerPage" [(ngModel)]="resultsPerPage">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -27,11 +41,11 @@
   <div class="col-12">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        <li class="page-item"><button class="page-link" (click)="movePreviousPage()">Previous</button></li>
+        <ng-container *ngFor="let page of paginationList">
+          <li class="page-item" [class.active]="isCurrentPage(page)"><button class="page-link" (click)="setPage(page)">{{ page }}</button></li>
+        </ng-container>
+        <li class="page-item"><button class="page-link" (click)="moveNextPage()">Next</button></li>
       </ul>
     </nav>
   </div>
