@@ -2,13 +2,13 @@
   <div class="col-6">
     <div class="form-group form-inline">
       <label for="searchText">Search</label>
-      <input type="text" class="form-control ml-3" id="searchText" [(ngModel)]="searchValue">
+      <input type="text" class="form-control ml-3" id="searchText" [(ngModel)]="mockData.searchValue">
     </div>
   </div>
   <div class="col-6">
     <div class="form-group form-inline float-right">
       <label for="resultsPerPage">Results Per Page</label>
-      <select class="custom-select ml-3" id="resultsPerPage" [(ngModel)]="resultsPerPage">
+      <select class="custom-select ml-3" id="resultsPerPage" [(ngModel)]="mockData.resultsPerPage">
         <option value="2">2</option>
         <option value="5">5</option>
         <option value="10">10</option>
@@ -28,7 +28,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of mockDataList; let i = index;">
+        <tr *ngFor="let item of mockData.pagedResults; let i = index;">
           <td>{{ item.id }}</td>
           <td>{{ item.item }}</td>
         </tr>
@@ -41,11 +41,11 @@
   <div class="col-12">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item"><button class="page-link" (click)="movePreviousPage()">Previous</button></li>
-        <ng-container *ngFor="let page of paginationList">
-          <li class="page-item" [class.active]="isCurrentPage(page)"><button class="page-link" (click)="setPage(page)">{{ page }}</button></li>
+        <li class="page-item"><button class="page-link" (click)="mockData.movePreviousPage()">Previous</button></li>
+        <ng-container *ngFor="let page of mockData.paginatorList">
+          <li class="page-item" [class.active]="mockData.isCurrentPage(page)"><button class="page-link" (click)="mockData.setPage(page)">{{ page }}</button></li>
         </ng-container>
-        <li class="page-item"><button class="page-link" (click)="moveNextPage()">Next</button></li>
+        <li class="page-item"><button class="page-link" (click)="mockData.moveNextPage()">Next</button></li>
       </ul>
     </nav>
   </div>

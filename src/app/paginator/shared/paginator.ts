@@ -287,4 +287,19 @@ export class Paginator<T> {
       return [];
     }
   }
+
+  get paginatorList(): Array<number> {
+    return this.getBasicPaginatorList();
+  }
+
+  // Need test coverage
+  isCurrentPage(value: number): boolean {
+    return this.currentPageNumber === value;
+  }
+
+  // Neet test coverage
+  setPage(value: number) {
+    this.currentPageNumber = value;
+  }
+
 }
