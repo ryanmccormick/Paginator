@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.mockDataService.getMockData()
-      .subscribe(data => this.mockData = new Paginator<MockData>(data));
+      .subscribe(data => this.mockData = new Paginator<MockData>(data, {sortBy: 'item'}));
   }
 
 }
